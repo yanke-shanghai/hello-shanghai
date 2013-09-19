@@ -1,0 +1,41 @@
+#!/bin/bash
+
+d_ip=10.3.4.188
+count=$1
+
+if [ $count -gt 0 ];then
+	while [ $count -gt 0 ]
+	do
+	    echo "---start ping---"
+	    #/opt/yk/dip_folder为目的ip目录
+		cat /opt/yk/dip_folder | while read d_ip
+		do  
+		    #/opt/yk/ping_folder为ping命令返回存储位置
+			ping -w 1 -c 1 $d_ip &> /opt/yk/ping_folder
+			ret=$?
+			if [ $ret -eq 0 ]; then
+				echo "$d_ip is up"
+			else
+				echo "$d_ip is down"
+			fi
+		done
+		count=$(($count-1))
+		sleep 2
+	done
+else
+	while [ 2 -gt 0 ]
+	do
+	    echo "---start ping---"
+		cat /opt/yk/dip_folder | while read d_ip
+		do
+			ping -w 1 -c 1 $d_ip &> /opt/yk/ping_folder
+			ret=$?
+			if [ $ret -eq 0 ]; then
+				echo "$d_ip is up"
+			else
+				echo "$d_ip is down"
+			fi
+		done
+		sleep 2
+	done
+fi
